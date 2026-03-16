@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dropout Prediction Dashboard</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --subtle: #475569;
+      --brand: #0b3b78;
+      --line: #d9e2ef;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 10% 10%, #e9f1fb 0%, var(--bg) 45%, #eef2f8 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.2rem;
+      color: var(--brand);
+    }
+
+    p {
+      margin: 0;
+      color: var(--subtle);
+      font-size: 0.95rem;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100vh - 120px);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      iframe {
+        height: calc(100vh - 150px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>AI Dropout Prediction and Counselling</h1>
+    <p>This page is hosted on Netlify and loads your Streamlit app from Render.</p>
+    <p class="hint">Set your Render app URL in <code>data-src</code> below.</p>
+  </div>
+
+  <iframe
+    title="Dropout Dashboard"
+    data-src="https://your-render-service.onrender.com"
+    src="https://your-render-service.onrender.com"
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+  ></iframe>
+</body>
+</html>

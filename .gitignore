@@ -1,0 +1,35 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments and local Python installs
+.venv/
+venv/
+Lib/
+Scripts/
+include/
+share/
+etc/
+
+# Build/test artifacts
+.pytest_cache/
+.mypy_cache/
+coverage/
+htmlcov/
+*.log
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+
+# IDE/system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Streamlit/runtime state
+.streamlit/
+*.sqlite3
