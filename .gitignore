@@ -33,3 +33,4 @@ Thumbs.db
 # Streamlit/runtime state
 .streamlit/
 *.sqlite3
+demo.py
