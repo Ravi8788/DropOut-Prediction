@@ -210,6 +210,16 @@ st.markdown(
         [data-testid="stSidebar"] {
             background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
             border-right: 1px solid var(--border);
+            display: block !important;
+            visibility: visible !important;
+            transform: none !important;
+            width: 18rem !important;
+            min-width: 18rem !important;
+            max-width: 18rem !important;
+            flex: 0 0 18rem !important;
+        }
+        section[data-testid="stSidebar"] > div {
+            width: 100% !important;
         }
         .block-container {
             max-width: 1250px;
@@ -736,29 +746,144 @@ def send_students_guardians_reports(df):
 
     sent_count = 0
     failed_list = []
+    
+    def risk_color(risk):
+        if risk == "High":
+            return "#dc2626"
+        elif risk == "Medium":
+            return "#f59e0b"
+        else:
+            return "#16a34a"
+
     for _, row in df.iterrows():
+        color = risk_color(row['Predicted_Risk'])
+        
+        # Build key issues based on risk factors
+        issues = []
+        if row['Attendance'] < 75:
+            issues.append(f"⚠️ Low Attendance: {row['Attendance']}%")
+        if row['Average_Marks'] < 50:
+            issues.append(f"⚠️ Low Academic Performance: {row['Average_Marks']:.1f}")
+        if row['Trend_Label'] == 'Declining':
+            issues.append(f"📉 Declining Trend: {row['Score_Trend']:+.1f}")
+        
+        key_issues_text = ", ".join(issues) if issues else "No critical issues identified"
+        
+        # Build priority actions
+        actions = []
+        if row['Attendance'] < 75:
+            actions.append("📋 Improve attendance through daily monitoring")
+        if row['Average_Marks'] < 50:
+            actions.append("📚 Engage in additional study sessions")
+        if row['Predicted_Risk'] == 'High':
+            actions.append("🚨 URGENT: Schedule counseling with mentor within 48 hours")
+        
+        actions_html = "<br>".join([f"• {action}" for action in actions]) if actions else "Continue current progress"
+        
         content = f"""
-D Y Patil Technical Campus, Talsande
-
-Hello {row['Name']},
-
-Your academic report shows:
-- Risk Level: {row['Predicted_Risk']}
-- Average Marks: {row['Average_Marks']:.2f}
-- Attendance: {row['Attendance']}%
-- Attempts: {int(row['Attempts'])}
-- Score Trend: {row['Trend_Label']} ({row['Score_Trend']:+.1f})
-
-Marks Details:
-- Maths: {row['Maths']}
-- Science: {row['Science']}
-- English: {row['English']}
-
-Please contact your mentor for guidance.
+<html>
+<head>
+    <style>
+        body {{ font-family: Arial, sans-serif; background-color: #f3f4f6; }}
+        .container {{ max-width: 800px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; }}
+        .header {{ background: linear-gradient(135deg, #0b3b78 0%, #072a55 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; }}
+        .header h1 {{ margin: 0; font-size: 24px; }}
+        .header p {{ margin: 5px 0 0 0; font-size: 14px; }}
+        h2 {{ color: #0b3b78; border-bottom: 2px solid #0b3b78; padding-bottom: 10px; }}
+        .summary-grid {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }}
+        .summary-item {{ background-color: #f8fafc; padding: 15px; border-radius: 6px; border-left: 4px solid #0b3b78; }}
+        .summary-item label {{ font-weight: bold; color: #0b3b78; display: block; font-size: 12px; }}
+        .summary-item value {{ font-size: 18px; color: #0f172a; margin-top: 5px; }}
+        table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
+        th {{ background-color: #0b3b78; color: white; padding: 12px; text-align: left; font-weight: bold; }}
+        td {{ padding: 12px; border-bottom: 1px solid #e5e7eb; }}
+        tr:hover {{ background-color: #f9fafb; }}
+        .risk-high {{ background-color: #dc2626; color: white; font-weight: bold; }}
+        .risk-medium {{ background-color: #f59e0b; color: white; font-weight: bold; }}
+        .risk-low {{ background-color: #16a34a; color: white; font-weight: bold; }}
+        .alert-section {{ background-color: #fef2f2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0; border-radius: 6px; }}
+        .alert-section h3 {{ color: #dc2626; margin-top: 0; }}
+        .action-section {{ background-color: #f0fdf4; border-left: 4px solid #16a34a; padding: 15px; margin: 20px 0; border-radius: 6px; }}
+        .action-section h3 {{ color: #16a34a; margin-top: 0; }}
+        .footer {{ text-align: center; color: #6b7280; font-size: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Your Academic Risk Assessment</h1>
+            <p>D Y Patil Technical Campus, Talsande</p>
+        </div>
+        
+        <p>Hello <strong>{row['Name']}</strong>,</p>
+        <p>Based on your current academic performance and attendance, here is your detailed risk assessment report:</p>
+        
+        <h2>Student Risk Analysis</h2>
+        <table>
+            <tr>
+                <th>Student Name</th>
+                <th>Risk Level</th>
+                <th>Attendance</th>
+                <th>Avg Marks</th>
+                <th>Score Trend</th>
+            </tr>
+            <tr>
+                <td><strong>{row['Name']}</strong></td>
+                <td class="risk-{row['Predicted_Risk'].lower()}"><strong>{row['Predicted_Risk']}</strong></td>
+                <td>{row['Attendance']}%</td>
+                <td>{row['Average_Marks']:.1f}</td>
+                <td>{row['Trend_Label']} ({row['Score_Trend']:+.1f})</td>
+            </tr>
+        </table>
+        
+        <h2>Subject-wise Performance</h2>
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Marks</th>
+            </tr>
+            <tr>
+                <td>Maths</td>
+                <td>{row['Maths']}</td>
+            </tr>
+            <tr>
+                <td>Science</td>
+                <td>{row['Science']}</td>
+            </tr>
+            <tr>
+                <td>English</td>
+                <td>{row['English']}</td>
+            </tr>
+            <tr>
+                <td><strong>Attempts</strong></td>
+                <td><strong>{int(row['Attempts'])}</strong></td>
+            </tr>
+        </table>
+        
+        <div class="alert-section">
+            <h3>⚠️ Key Issues</h3>
+            <p>{key_issues_text}</p>
+        </div>
+        
+        <div class="action-section">
+            <h3>✅ Recommended Actions</h3>
+            <p>{actions_html}</p>
+        </div>
+        
+        <p><strong>Fee Status:</strong> {row['Fee_Paid']}</p>
+        
+        <p style="color: #6b7280; font-style: italic;">Please reach out to your mentor or counselor if you need any guidance or support. Your success is our priority.</p>
+        
+        <div class="footer">
+            <p>This is an automated academic alert report. For queries, please contact your mentor.</p>
+        </div>
+    </div>
+</body>
+</html>
 """
         for email in [row['Student_Email'], row['Guardian_Email']]:
             if email:
-                success, error = send_email(email, f"Academic Risk Report - {row['Name']}", content)
+                success, error = send_email(email, f"Academic Risk Report - {row['Name']}", content, html=True)
                 if success:
                     sent_count += 1
                 else:
