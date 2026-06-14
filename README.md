@@ -79,6 +79,7 @@ Detailed deployment steps are in `DEPLOY_NETLIFY.md`.
 - Netlify does not run Streamlit directly as a long-running Python service.
 - Current DB is SQLite; for production persistence, consider migrating to PostgreSQL.
 
-## Author
+## Authors & Contributors
 
-Ravi
+- **Owner/Author**: [Ravi8788](https://github.com/Ravi8788)
+- **Contributor**: [sahilkatkar0026](https://github.com/sahilkatkar0026)

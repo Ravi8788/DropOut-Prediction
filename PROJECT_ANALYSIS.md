@@ -1,7 +1,8 @@
 # AI Dropout Prediction and Counselling - Project Analysis
 
 **Project Date:** April 27, 2026  
-**Author:** Ravi  
+**Owner/Author:** Ravi8788  
+**Contributor:** sahilkatkar0026  
 **Tech Stack:** Python, Streamlit, Scikit-learn, Pandas, SQLite
 
 ---
@@ -677,5 +678,5 @@ git push origin main  # (auto-deploys with render.yaml)
 
 **Document Generated:** April 27, 2026  
 **Project Status:** Development/Early Deployment Phase  
-**Maintainer:** Ravi  
+**Maintainers:** Ravi8788, sahilkatkar0026  
 **Version:** 1.0 (Analysis)
